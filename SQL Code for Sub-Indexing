@@ -1,0 +1,77 @@
+-- PM10 Sub-Index
+SELECT 
+    (CASE 
+        WHEN COALESCE(pm10,0) BETWEEN 0 AND 50 THEN pm10
+        WHEN COALESCE(pm10,0) BETWEEN 51 AND 100 THEN pm10
+        WHEN COALESCE(pm10,0) BETWEEN 101 AND 250 THEN 100 + (pm10 - 100) * 100 / 150
+        WHEN COALESCE(pm10,0) BETWEEN 251 AND 350 THEN 200 + (pm10 - 250)
+        WHEN COALESCE(pm10,0) BETWEEN 351 AND 430 THEN 300 + (pm10 - 350) * 100 / 80
+        WHEN COALESCE(pm10,0) > 430 THEN 400 + (pm10 - 430) * 100 / 80
+        ELSE 0
+    END) as Pm10Index 
+FROM cowi.cowi_aqi_data;
+
+-- PM2.5 Sub-Index
+SELECT 
+    (CASE 
+        WHEN COALESCE(pm2_5,0) BETWEEN 0 AND 30 THEN pm2_5 * 50 / 30
+        WHEN COALESCE(pm2_5,0) BETWEEN 31 AND 60 THEN 50 + (pm2_5 - 30) * 50 / 30
+        WHEN COALESCE(pm2_5,0) BETWEEN 61 AND 90 THEN 100 + (pm2_5 - 60) * 100 / 30
+        WHEN COALESCE(pm2_5,0) BETWEEN 91 AND 120 THEN 200 + (pm2_5 - 90) * 100 / 30
+        WHEN COALESCE(pm2_5,0) BETWEEN 121 AND 250 THEN 300 + (pm2_5 - 120) * 100 / 130
+        WHEN COALESCE(pm2_5,0) > 250 THEN 400 + (pm2_5 - 250) * 100 / 130
+        ELSE 0
+    END) as Pm2_5Index 
+FROM cowi.cowi_aqi_data;
+
+-- CO Sub-Index
+SELECT 
+    (CASE 
+        WHEN COALESCE(co,0) BETWEEN 0 AND 1 THEN co * 50 / 1
+        WHEN COALESCE(co,0) BETWEEN 1.1 AND 2 THEN 50 + (co - 1) * 50 / 1
+        WHEN COALESCE(co,0) BETWEEN 2.1 AND 10 THEN 100 + (co - 2) * 100 / 8
+        WHEN COALESCE(co,0) BETWEEN 10.1 AND 17 THEN 200 + (co - 10) * 100 / 7
+        WHEN COALESCE(co,0) BETWEEN 17.1 AND 34 THEN 300 + (co - 17) * 100 / 17
+        WHEN COALESCE(co,0) > 34 THEN 400 + (co - 34) * 100 / 17
+        ELSE 0
+    END) as COIndex 
+FROM cowi.cowi_aqi_data;
+
+-- NO2 Sub-Index
+SELECT 
+    (CASE 
+        WHEN COALESCE(no,0) BETWEEN 0 AND 40 THEN no * 50 / 40
+        WHEN COALESCE(no,0) BETWEEN 41 AND 80 THEN 50 + (no - 40) * 50 / 40
+        WHEN COALESCE(no,0) BETWEEN 81 AND 180 THEN 100 + (no - 80) * 100 / 100
+        WHEN COALESCE(no,0) BETWEEN 181 AND 280 THEN 200 + (no - 180) * 100 / 100
+        WHEN COALESCE(no,0) BETWEEN 281 AND 400 THEN 300 + (no - 280) * 100 / 120
+        WHEN COALESCE(no,0) > 400 THEN 400 + (no - 400) * 100 / 120
+        ELSE 0
+    END) as NO2Index 
+FROM cowi.cowi_aqi_data;
+
+-- Ozone Sub-Index
+SELECT 
+    (CASE 
+        WHEN COALESCE(ozone,0) BETWEEN 0 AND 50 THEN ozone
+        WHEN COALESCE(ozone,0) BETWEEN 51 AND 100 THEN ozone
+        WHEN COALESCE(ozone,0) BETWEEN 101 AND 168 THEN 100 + (ozone - 100) * 100 / 68
+        WHEN COALESCE(ozone,0) BETWEEN 169 AND 208 THEN 200 + (ozone - 168) * 100 / 40
+        WHEN COALESCE(ozone,0) BETWEEN 209 AND 748 THEN 300 + (ozone - 208) * 100 / 539
+        WHEN COALESCE(ozone,0) > 748 THEN 400 + (ozone - 748) * 100 / 539
+        ELSE 0
+    END) as OzoneIndex 
+FROM cowi.cowi_aqi_data;
+
+-- SO2 Sub-Index
+SELECT 
+    (CASE 
+        WHEN COALESCE(so2,0) BETWEEN 0 AND 40 THEN so2 * 50 / 40
+        WHEN COALESCE(so2,0) BETWEEN 41 AND 80 THEN 50 + (so2 - 40) * 50 / 40
+        WHEN COALESCE(so2,0) BETWEEN 81 AND 380 THEN 100 + (so2 - 80) * 100 / 300
+        WHEN COALESCE(so2,0) BETWEEN 381 AND 800 THEN 200 + (so2 - 380) * 100 / 420
+        WHEN COALESCE(so2,0) BETWEEN 801 AND 1600 THEN 300 + (so2 - 800) * 100 / 800
+        WHEN COALESCE(so2,0) > 1600 THEN 400 + (so2 - 1600) * 100 / 800
+        ELSE 0
+    END) as SO2Index 
+FROM cowi.cowi_aqi_data;
